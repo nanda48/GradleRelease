@@ -1,0 +1,94 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+def groupId = project.PUBLISH_GROUP_ID
+def artifactId = project.PUBLISH_ARTIFACT_ID
+def version = project.PUBLISH_VERSION
+def localReleaseDest = "${buildDir}/release/${version}"
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Android Common Utilities'
+                packaging 'jar'
+
+                // optionally artifactId can be defined here
+                pom.groupId = groupId
+                pom.artifactId = artifactId
+                pom.version = version
+                description 'Android common utilities library'
+                url 'https://github.com/zambelz48/AndroidCommonUtilities'
+
+                scm {
+                    connection 'scm:git:git@github.com:zambelz48/AndroidCommonUtilities.git'
+                    developerConnection 'scm:git:git@github.com:zambelz48/AndroidCommonUtilities.git'
+                    url 'git@github.com:zambelz48/AndroidCommonUtilities.git'
+                }
+
+                licenses {
+                    license {
+                        name 'GNU General Public License v2.0'
+                        url 'https://github.com/zambelz48/AndroidCommonUtilities/blob/master/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'nanda'
+                        name 'Nanda Julianda Akbar'
+                        email 'nanda.julianda48@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task zipRelease(type: Zip) {
+    from localReleaseDest
+    destinationDir buildDir
+    archiveName "release-${version}.zip"
+}
+
+task generateRelease << {
+    println "Release ${version} can be found at ${localReleaseDest}/"
+    println "Release ${version} zipped can be found ${buildDir}/release-${version}.zip"
+}
+
+generateRelease.dependsOn(uploadArchives)
+generateRelease.dependsOn(zipRelease)
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
