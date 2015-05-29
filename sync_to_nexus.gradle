@@ -1,29 +1,29 @@
-def repoUrl = Project.PUBLISH_REPO_URL
-def repoSnapshotUrl = Project.PUBLISH_REPO_SNAPSHOT_URL
+def repoUrl = project.PUBLISH_REPO_URL
+def repoSnapshotUrl = project.PUBLISH_REPO_SNAPSHOT_URL
 
 def groupId = project.PUBLISH_GROUP_ID
 def artifactId = project.PUBLISH_ARTIFACT_ID
 def version = project.PUBLISH_VERSION
 
-def useSigning = Project.PUBLISH_USE_SIGNING
+def useSigning = project.PUBLISH_USE_SIGNING
 
-def repoUsername = Project.PUBLISH_REPO_USERNAME
-def repoPassword = Project.PUBLISH_REPO_PASSWORD
+def repoUsername = project.PUBLISH_REPO_USERNAME
+def repoPassword = project.PUBLISH_REPO_PASSWORD
 
-def appName = Project.PUBLISH_APP_NAME
-def appDescription = Project.PUBLISH_APP_DESCRIPTION
-def appUrl = Project.PUBLISH_APP_URL
+def appName = project.PUBLISH_APP_NAME
+def appDescription = project.PUBLISH_APP_DESCRIPTION
+def appUrl = project.PUBLISH_APP_URL
 
-def scmConnection = Project.PUBLISH_SCM_CONNECTION
-def scmDevConnection = Project.PUBLISH_SCM_DEVCONNECTION
-def scmUrl = Project.PUBLISH_SCM_URL
+def scmConnection = project.PUBLISH_SCM_CONNECTION
+def scmDevConnection = project.PUBLISH_SCM_DEVCONNECTION
+def scmUrl = project.PUBLISH_SCM_URL
 
-def licenseName = Project.PUBLISH_LICENSE_NAME
-def licenseUrl = Project.PUBLISH_LICENSE_URL
+def licenseName = project.PUBLISH_LICENSE_NAME
+def licenseUrl = project.PUBLISH_LICENSE_URL
 
-def devId = Project.PUBLISH_DEV_ID
-def devName = Project.PUBLISH_DEV_ID
-def devEmail = Project.PUBLISH_DEV_EMAIL
+def devId = project.PUBLISH_DEV_ID
+def devName = project.PUBLISH_DEV_ID
+def devEmail = project.PUBLISH_DEV_EMAIL
 
 def localReleaseDest = "${buildDir}/release/${version}"
 
