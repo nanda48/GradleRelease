@@ -1,3 +1,5 @@
+apply plugin: 'maven'
+
 def repoUrl = Project.PUBLISH_REPO_URL
 def repoSnapshotUrl = Project.PUBLISH_REPO_SNAPSHOT_URL
 
